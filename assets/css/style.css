@@ -41,6 +41,8 @@ body {
 input{
     margin: 5px;
 }
-#next {
+#next, #restart {
     display:none;
+    margin:auto;
+    margin-bottom:10px;
 }

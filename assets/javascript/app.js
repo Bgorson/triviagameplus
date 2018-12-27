@@ -8,7 +8,8 @@ var quizQuestions = [
             "Xel-Naga",
             "Terran"
         ],
-        correctAnswer:2
+        correctAnswer:2,
+        gif: "https://media.giphy.com/media/zRTYFMDNtycPm/giphy.gif"
     },
         {
             question: "Who is the main Protagonist?",
@@ -18,7 +19,8 @@ var quizQuestions = [
                 "Matt Horner",
                 "Murlocs"
             ],
-            correctAnswer:1
+            correctAnswer:1,
+            gif: "https://media.giphy.com/media/3oz8xwMJwWmGA49jbi/giphy.gif"
         },
         {
             question: "What is the cost of a Cybernetics Core?",
@@ -28,7 +30,8 @@ var quizQuestions = [
                 "100 Minerals/ 100 Gas",
                 "200 Minerals/ 50 Gas"
             ],
-            correctAnswer:0
+            correctAnswer:0,
+            gif: "https://media.giphy.com/media/11LkMV5jfQiSti/giphy.gif"
         },
         {
             question: "What does RTS stand for?",
@@ -38,7 +41,8 @@ var quizQuestions = [
                 "Real Time Strategy",
                 "Read Text Script"
             ],
-            correctAnswer:2
+            correctAnswer:2,
+            gif: "https://media.giphy.com/media/3o6ZtgrHwKzt6n0m52/giphy.gif"
         },
         {
             question: "Who is the Queen of Blades?",
@@ -48,7 +52,8 @@ var quizQuestions = [
                 "Matt Horner",
                 "Thrall"
             ],
-            correctAnswer:0
+            correctAnswer:0,
+            gif:"https://media.giphy.com/media/wsUDVcaNz7KxXtNKdq/giphy.gif"
         }
     ]
 var time=30;
@@ -57,20 +62,27 @@ var score=0;
 var iQuestion = 0;
 var quizSection =document.getElementById('questions');
 var totalQuestions = quizQuestions.length-1;
+var slideTime = 3000;
 function start () {
     intervalId=setInterval(decrement,1000)
 }
 
 function questionDisplay () {
-    $("#questions").append('<p id = "question ' + iQuestion+ '">'+ quizQuestions[iQuestion].question + '</p>')
+    $("#timer").css("display","block")
+    $("#next").css("display","block")
+    if (iQuestion == totalQuestions) {
+        $("#submit").css("display","block")
+        $("#next").css("display","none")
+      }
+    $("#questions").html('<p id = "question ' + iQuestion+ '">'+ quizQuestions[iQuestion].question + '</p>')
     clearInterval(intervalId)
-    start();
+    time =30;
+    $('#countDown').html("Time Remaining: "+time+" Seconds")
+    start(); 
     for (i=0;i<4;i++){
       $("#questions").append('<label class ="radio-inline"><input type= "radio" name="optradio ' + iQuestion + '" value ="'+ i + '">'+  quizQuestions[iQuestion].answers[i]+ '</label>')
-      }
-      console.log(iQuestion)
-      iQuestion++;
-
+      }  
+      
 }
 
 function decrement() { //countdown timer
@@ -85,6 +97,15 @@ function decrement() { //countdown timer
     }
 }
 
+function transition(slideNumber) {
+    console.log(quizQuestions[slideNumber].gif)
+    $('#questions').html("<img src=" + quizQuestions[iQuestion].gif + ">")
+    $("#timer").css("display","none")
+    $("#next").css("display","none")
+    setTimeout(function() {
+        questionDisplay();
+    }, slideTime);
+}
 
 $("#start").on("click",function(){ //what happens when "start" is clicked
     start()
@@ -96,25 +117,45 @@ $("#start").on("click",function(){ //what happens when "start" is clicked
     questionDisplay()
     })
 
-$("#next").on("click", function() { //when next is clicked
-    if (iQuestion == totalQuestions) {
-        $("#submit").css("display","block")
-        $("#next").css("display","none")
-      }
-     questionDisplay()
-     })
+$("#next").on("click", function() {//when next is clicked
+    if(($("input[name='optradio " + (iQuestion) + "']:checked").val()) == quizQuestions[iQuestion].correctAnswer) {
+        score++;
+    }
+    transition(iQuestion)
+    iQuestion++;
+    
+    
+       })
 
 
 $("#submit").click(function(){ // Submitting answers and checking them to the correct answer value
-    for (var i = 0;i<quizQuestions.length;i++){
-    if(($("input[name='optradio " + i + "']:checked").val()) == quizQuestions[i].correctAnswer) {
-        score++
+    if(($("input[name='optradio " + iQuestion + "']:checked").val()) == quizQuestions[iQuestion].correctAnswer) {
+        score++;
     }
-
-}
-$("#timer").css("display","none") // Clears screen and displays score
-$("#submit").css("display","none")
-$('#questions').html("You got " + score+ ' correct!')
-$('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
+    $("#submit").css("display","none")
+    $('#questions').html("<img src=" + quizQuestions[iQuestion].gif + ">")
+    $("#timer").css("display","none")
+    $("#next").css("display","none")
+    setTimeout(function() {
+        $("#timer").css("display","none") // Clears screen and displays score
+        $("#submit").css("display","none")
+        $('#questions').html("You got " + score+ ' correct!')
+        $('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
+        $("#restart").css("display","block")
+    }, slideTime);
+    clearInterval(intervalId)
+    
 
 }); 
+
+$("#restart").click(function(){
+    score = 0;
+    iQuestion = 0;
+    $("#timer").css("display","block")
+    $("#next").css("display","block")
+    $('#questions').css("display","block")
+    $('#countDown').html("Time Remaining: "+time+" Seconds")
+    $("#restart").css("display","none")
+    questionDisplay()
+
+})
