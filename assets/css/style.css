@@ -30,6 +30,7 @@ body {
 #submit {
     margin:auto;
     margin-bottom:10px;
+    display:none;
 }
 #questions {
     padding-top:5px;
@@ -39,4 +40,7 @@ body {
 }
 input{
     margin: 5px;
+}
+#next {
+    display:none;
 }

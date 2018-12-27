@@ -1,42 +1,4 @@
 //Timer variables
-var time=30;
-var intervalId;
-var score=0;
-
-
-$("#start").on("click",function(){ //what happens when "start" is clicked
-    start()
-    $("#start").remove();
-    $("#timer").css("display","block")
-    $("#submit").css("display","block")
-    $('#questions').css("display","block")
-    $('#countDown').html("Time Remaining: "+time+" Seconds")   
-})  
- 
-function start () {
-    intervalId=setInterval(decrement,1000)
-}
-function decrement() { //countdown timer
-    time--;
-    $('#countDown').html("Time Remaining: "+time+" Seconds")
-    if (time === 0) { // when time runs out
-        clearInterval(intervalId)
-        for (var i = 0;i<quizQuestions.length;i++){
-            if(($("input[name='optradio " + i + "']:checked").val()) == quizQuestions[i].correctAnswer) {
-                score++
-            }
-        
-        }
-        $("#timer").css("display","none")
-        $("#submit").css("display","none")
-        $('#questions').html("You ran out of time and got " + score + " correct!")
-        $('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
-    }
-}
-//Questions
-var quizSection =document.getElementById('questions');
-
-
 var quizQuestions = [
     {
         question: "Which one of these is NOT a Startcraft Race?",
@@ -89,28 +51,70 @@ var quizQuestions = [
             correctAnswer:0
         }
     ]
+var time=30;
+var intervalId;
+var score=0;
 var iQuestion = 0;
-    $("#submit").on("click", function() { //creating questions on the page
-        
-        $("#questions").append('<p id = "question ' + iQuestion+ '">'+ quizQuestions[iQuestion].question + '</p>')
-          for (i=0;i<4;i++){
-            $("#questions").append('<label class ="radio-inline"><input type= "radio" name="optradio ' + iQuestion + '" value ="'+ i + '">'+  quizQuestions[iQuestion].answers[i]+ '</label>')
-            }
-            console.log(iQuestion)
-            iQuestion++;
-    
+var quizSection =document.getElementById('questions');
+var totalQuestions = quizQuestions.length-1;
+function start () {
+    intervalId=setInterval(decrement,1000)
+}
+
+function questionDisplay () {
+    $("#questions").append('<p id = "question ' + iQuestion+ '">'+ quizQuestions[iQuestion].question + '</p>')
+    clearInterval(intervalId)
+    start();
+    for (i=0;i<4;i++){
+      $("#questions").append('<label class ="radio-inline"><input type= "radio" name="optradio ' + iQuestion + '" value ="'+ i + '">'+  quizQuestions[iQuestion].answers[i]+ '</label>')
+      }
+      console.log(iQuestion)
+      iQuestion++;
+
+}
+
+function decrement() { //countdown timer
+    time--;
+    $('#countDown').html("Time Remaining: "+time+" Seconds")
+    if (time === 0) { // when time runs out
+        clearInterval(intervalId)
+        $("#timer").css("display","none")
+        $("#submit").css("display","none")
+        $('#questions').html("You ran out of time and got " + score + " correct!")
+        $('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
+    }
+}
+
+
+$("#start").on("click",function(){ //what happens when "start" is clicked
+    start()
+    $("#start").remove();
+    $("#timer").css("display","block")
+    $("#next").css("display","block")
+    $('#questions').css("display","block")
+    $('#countDown').html("Time Remaining: "+time+" Seconds")
+    questionDisplay()
     })
 
-// $("#submit").click(function(){ // Submitting answers and checking them to the correct answer value
-//     for (var i = 0;i<quizQuestions.length;i++){
-//     if(($("input[name='optradio " + i + "']:checked").val()) == quizQuestions[i].correctAnswer) {
-//         score++
-//     }
+$("#next").on("click", function() { //when next is clicked
+    if (iQuestion == totalQuestions) {
+        $("#submit").css("display","block")
+        $("#next").css("display","none")
+      }
+     questionDisplay()
+     })
 
-// }
-// $("#timer").css("display","none") // Clears screen and displays score
-// $("#submit").css("display","none")
-// $('#questions').html("You got " + score+ ' correct!')
-// $('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
 
-// }); 
+$("#submit").click(function(){ // Submitting answers and checking them to the correct answer value
+    for (var i = 0;i<quizQuestions.length;i++){
+    if(($("input[name='optradio " + i + "']:checked").val()) == quizQuestions[i].correctAnswer) {
+        score++
+    }
+
+}
+$("#timer").css("display","none") // Clears screen and displays score
+$("#submit").css("display","none")
+$('#questions').html("You got " + score+ ' correct!')
+$('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
+
+}); 
