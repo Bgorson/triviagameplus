@@ -89,28 +89,28 @@ var quizQuestions = [
             correctAnswer:0
         }
     ]
-    var questionNumber;
-
-    $(quizQuestions).each(function(i,e) { //creating questions on the page
-        questionNumber=i;
-          $("#questions").append('<p id = "question ' + i+ '">'+ e.question + '</p>')
+var iQuestion = 0;
+    $("#submit").on("click", function() { //creating questions on the page
+        
+        $("#questions").append('<p id = "question ' + iQuestion+ '">'+ quizQuestions[iQuestion].question + '</p>')
           for (i=0;i<4;i++){
-            $("#questions").append('<label class ="radio-inline"><input type= "radio" name="optradio ' + questionNumber + '" value ="'+ i+ '">'+  e.answers[i]+ '</label>')
-       }
-    }
+            $("#questions").append('<label class ="radio-inline"><input type= "radio" name="optradio ' + iQuestion + '" value ="'+ i + '">'+  quizQuestions[iQuestion].answers[i]+ '</label>')
+            }
+            console.log(iQuestion)
+            iQuestion++;
+    
+    })
 
-    )
+// $("#submit").click(function(){ // Submitting answers and checking them to the correct answer value
+//     for (var i = 0;i<quizQuestions.length;i++){
+//     if(($("input[name='optradio " + i + "']:checked").val()) == quizQuestions[i].correctAnswer) {
+//         score++
+//     }
 
-$("#submit").click(function(){ // Submitting answers and checking them to the correct answer value
-    for (var i = 0;i<quizQuestions.length;i++){
-    if(($("input[name='optradio " + i + "']:checked").val()) == quizQuestions[i].correctAnswer) {
-        score++
-    }
+// }
+// $("#timer").css("display","none") // Clears screen and displays score
+// $("#submit").css("display","none")
+// $('#questions').html("You got " + score+ ' correct!')
+// $('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
 
-}
-$("#timer").css("display","none") // Clears screen and displays score
-$("#submit").css("display","none")
-$('#questions').html("You got " + score+ ' correct!')
-$('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
-
-}); 
+// }); 
