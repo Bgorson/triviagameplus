@@ -1,0 +1,42 @@
+body {
+    background-color: rgba(11,100,159,1);
+    
+}
+
+.triviaMain {
+    text-align:center;
+    background-color: rgba(0,21,66,1);
+    color: white;
+    min-height: 20em;
+    height:100%;
+    margin-top:5%;
+    }
+.vertical-align {
+    position:relative;
+    top:25%;
+}
+.title {
+    font-size:5em;
+    font-family: 'Playfair Display SC', serif;
+    }
+#start {
+    margin-top:3em;
+    padding:25px;
+    width:300px;
+}
+#timer, #questions, #submit {
+    display:none;
+}
+#submit {
+    margin:auto;
+    margin-bottom:10px;
+}
+#questions {
+    padding-top:5px;
+}
+.radio-inline{
+    margin-bottom:3rem;
+}
+input{
+    margin: 5px;
+}
