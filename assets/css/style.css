@@ -46,3 +46,10 @@ input{
     margin:auto;
     margin-bottom:10px;
 }
+img {
+    margin-top:3em;
+    margin-bottom:3em;
+}
+#answerText{
+    font-weight: bold;
+}

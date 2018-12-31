@@ -17,8 +17,7 @@ var quizQuestions = [
                 "Sarah Kerrigan",
                 "Jim Raynor",
                 "Matt Horner",
-                "Murlocs"
-            ],
+              ],
             correctAnswer:1,
             gif: "https://media.giphy.com/media/3oz8xwMJwWmGA49jbi/giphy.gif"
         },
@@ -54,6 +53,37 @@ var quizQuestions = [
             ],
             correctAnswer:0,
             gif:"https://media.giphy.com/media/wsUDVcaNz7KxXtNKdq/giphy.gif"
+        },
+        {
+            question: "Which was the first race created by the Xel-Naga?",
+            answers: [
+                "Zerg",
+                "Terran",
+                "Orcs",
+                "Protoss"
+            ],
+            correctAnswer:3,
+            gif:"https://media.giphy.com/media/flWQcqmdpZbSU/giphy.gif"
+        },
+        {
+            question: "How many templars can make an Archon?",
+            answers: [
+                "One",
+                "Two",
+                "Three",
+            ],
+            correctAnswer:1,
+            gif:"https://media.giphy.com/media/6SnDnv5MzozOE/giphy.gif"
+        },
+        {
+            question: "Which is a popular Zerg strategy?",
+            answers: [
+                "Mass Broodlords on one base",
+                "Zerg Rush",
+                "Triple Hatchery before pool",
+            ],
+            correctAnswer:1,
+            gif:"https://media.giphy.com/media/26BRtn3tIrznhRhwQ/giphy.gif"
         }
     ]
 var time=30;
@@ -66,8 +96,10 @@ var slideTime = 3000;
 function start () {
     intervalId=setInterval(decrement,1000)
 }
+var isCorrectAnswer = false;
 
 function questionDisplay () {
+    $("#answerText").html("")
     $("#timer").css("display","block")
     $("#next").css("display","block")
     if (iQuestion == totalQuestions) {
@@ -79,7 +111,7 @@ function questionDisplay () {
     time =30;
     $('#countDown').html("Time Remaining: "+time+" Seconds")
     start(); 
-    for (i=0;i<4;i++){
+    for (i=0;i<quizQuestions[iQuestion].answers.length;i++){
       $("#questions").append('<label class ="radio-inline"><input type= "radio" name="optradio ' + iQuestion + '" value ="'+ i + '">'+  quizQuestions[iQuestion].answers[i]+ '</label>')
       }  
       
@@ -92,12 +124,23 @@ function decrement() { //countdown timer
         clearInterval(intervalId)
         $("#timer").css("display","none")
         $("#submit").css("display","none")
-        $('#questions').html("You ran out of time and got " + score + " correct!")
-        $('#questions').append('<p>And you missed '+ (quizQuestions.length-score) + '</p>')
+        $('#questions').html('<p style ="color:red">You ran out of time!</p>')
+        isCorrectAnswer =false;
     }
 }
 
 function transition(slideNumber) {
+    clearInterval(intervalId)
+    console.log(isCorrectAnswer)
+    var x = quizQuestions[iQuestion].correctAnswer
+    console.log(quizQuestions[iQuestion].answers[x])
+
+    if (isCorrectAnswer == false) {
+        $('#answerText').html('<div style="color:red">Incorrect! The correct answer was ' + quizQuestions[iQuestion].answers[x] + '</div>')
+    }
+    if (isCorrectAnswer== true) {
+        $('#answerText').html('<p style ="color:green">Correct!</p>')
+    }
     console.log(quizQuestions[slideNumber].gif)
     $('#questions').html("<img src=" + quizQuestions[iQuestion].gif + ">")
     $("#timer").css("display","none")
@@ -120,23 +163,33 @@ $("#start").on("click",function(){ //what happens when "start" is clicked
 $("#next").on("click", function() {//when next is clicked
     if(($("input[name='optradio " + (iQuestion) + "']:checked").val()) == quizQuestions[iQuestion].correctAnswer) {
         score++;
+        isCorrectAnswer =true;
+    }
+    else {
+        isCorrectAnswer=false;
     }
     transition(iQuestion)
     iQuestion++;
-    
-    
-       })
+    })
 
 
 $("#submit").click(function(){ // Submitting answers and checking them to the correct answer value
     if(($("input[name='optradio " + iQuestion + "']:checked").val()) == quizQuestions[iQuestion].correctAnswer) {
         score++;
+        isCorrectAnswer =true;
+        $('#answerText').html('<div style="color:green">Correct!</div>')
+    }
+    else {
+        isCorrectAnswer = false;
+        var x = quizQuestions[iQuestion].correctAnswer
+        $('#answerText').html('<div style="color:red">Incorrect! The correct answer was ' + quizQuestions[iQuestion].answers[x] + '</div>')
     }
     $("#submit").css("display","none")
     $('#questions').html("<img src=" + quizQuestions[iQuestion].gif + ">")
     $("#timer").css("display","none")
     $("#next").css("display","none")
     setTimeout(function() {
+        $("#answerText").html("")
         $("#timer").css("display","none") // Clears screen and displays score
         $("#submit").css("display","none")
         $('#questions').html("You got " + score+ ' correct!')
@@ -144,9 +197,7 @@ $("#submit").click(function(){ // Submitting answers and checking them to the co
         $("#restart").css("display","block")
     }, slideTime);
     clearInterval(intervalId)
-    
-
-}); 
+    }); 
 
 $("#restart").click(function(){
     score = 0;
@@ -157,5 +208,4 @@ $("#restart").click(function(){
     $('#countDown').html("Time Remaining: "+time+" Seconds")
     $("#restart").css("display","none")
     questionDisplay()
-
 })
