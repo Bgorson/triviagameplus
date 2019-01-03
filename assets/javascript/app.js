@@ -1,7 +1,7 @@
 //Timer variables
 var quizQuestions = [
     {
-        question: "Which one of these is NOT a Startcraft Race?",
+        question: "Which one of these is NOT a playable StarCraft Race?",
         answers: [
             "Zerg",
             "Protoss",
@@ -12,7 +12,7 @@ var quizQuestions = [
         gif: "https://media.giphy.com/media/zRTYFMDNtycPm/giphy.gif"
     },
         {
-            question: "Who is the main Protagonist?",
+            question: "Who is the main protagonist?",
             answers: [
                 "Sarah Kerrigan",
                 "Jim Raynor",
@@ -24,9 +24,9 @@ var quizQuestions = [
         {
             question: "What is the cost of a Cybernetics Core?",
             answers: [
-                "150 Minerals/150 Gas",
+                "150 Minerals/0 Gas",
                 "50 Minerals/ 50 Gas",
-                "100 Minerals/ 100 Gas",
+                "100 Minerals/ 0 Gas",
                 "200 Minerals/ 50 Gas"
             ],
             correctAnswer:0,
