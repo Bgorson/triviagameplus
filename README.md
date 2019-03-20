@@ -6,4 +6,6 @@ Users have 30 seconds to pick a correct answer.
 At the end, users receive a total score of correct answers and number missed.
 Users are then given an option to restart the game from the beginning. 
 
+App is designed with Javascript, HTML and jquery.
+
 https://bgorson.github.io/triviagameplus/
